@@ -10,6 +10,7 @@ tox = "*"
 flake8 = "*"
 coverage = "*"
 pytest = "*"
+attr = "*"
 
 [requires]
 python_version = "3.7"
