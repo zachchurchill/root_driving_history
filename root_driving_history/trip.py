@@ -26,3 +26,25 @@ class TripTime(object):
 
     def __add__(self, other):
         raise NotImplementedError
+
+
+@attr.s
+class Trip(object):
+    start_time: TripTime = attr.ib()
+    end_time: TripTime = attr.ib()
+    miles_driven: float = attr.ib()
+
+    @start_time.validator
+    def starts_before_end_time(self, attribute, value):
+        if value >= self.end_time:
+            raise ValueError(
+                'start_time should be before end_time'
+            )
+
+    @property
+    def duration(self) -> int:
+        return self.end_time - self.start_time
+
+    @property
+    def mph(self) -> float:
+        return self.miles_driven / ((self.end_time - self.start_time) / 60)
