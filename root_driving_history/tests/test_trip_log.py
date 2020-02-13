@@ -108,11 +108,17 @@ class TestGetAverageSpeed:
         trip_log.add_trip(trip1)
         trip_log.add_trip(trip2)
 
-        average_speed = ((trip1.mph + trip2.mph) / 2)
+        average_speed = (
+            (trip1.miles_driven + trip2.miles_driven) /
+            (trip1.duration / 60 + trip2.duration / 60)
+        )
         assert trip_log.get_average_speed() == average_speed
 
         trip3 = Trip(TripTime(6, 0), TripTime(7, 0), 50)
         trip_log.add_trip(trip3)
 
-        average_speed = ((trip1.mph + trip2.mph + trip3.mph) / 3)
+        average_speed = (
+            (trip1.miles_driven + trip2.miles_driven + trip3.miles_driven) /
+            (trip1.duration / 60 + trip2.duration / 60 + trip3.duration / 60)
+        )
         assert trip_log.get_average_speed() == average_speed

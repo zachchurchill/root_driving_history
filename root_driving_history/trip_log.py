@@ -35,4 +35,7 @@ class TripLog(object):
     def get_average_speed(self) -> Union[None, float]:
         if self.isempty():
             return None
-        return sum([trip.mph for trip in self._trips]) / len(self._trips)
+        return (
+            sum([trip.miles_driven for trip in self._trips]) /
+            sum([trip.duration / 60 for trip in self._trips])
+        )
