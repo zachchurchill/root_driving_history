@@ -9,51 +9,30 @@ from .trip import Trip
 
 
 @attr.s
-class TripLogItem(object):
+class TripLog(object):
     driver: Driver = attr.ib()
-    trip: Trip = attr.ib()
+    _trips: List[Trip] = attr.ib(init=False, default=attr.Factory(list))
 
     @driver.validator
-    def is_a_driver_object(self, attribute, value):
+    def is_a_driver(self, attribute, value):
         if value.__class__ != Driver:
-            raise ValueError("'driver' needs to be a Driver object")
-
-    @trip.validator
-    def is_a_trip_object(self, attribute, value):
-        if value.__class__ != Trip:
-            raise ValueError("'trip' needs to be a Trip object")
-
-
-@attr.s
-class TripLog(object):
-    _items: List[TripLogItem] = attr.ib(init=False, default=attr.Factory(list))
+            raise TypeError("'driver' needs to be a Driver object")
 
     @property
-    def items(self):
-        return self._items
+    def trips(self):
+        return self._trips
 
-    def _get_driver_logs(self, driver) -> List[TripLogItem]:
-        return [
-            log_item for log_item in self._items if log_item.driver == driver
-        ]
+    def isempty(self):
+        return len(self._trips) == 0
 
-    def add_trip_log_item(self, driver: Driver, trip: Trip) -> "TripLog":
-        self._items.append(TripLogItem(driver, trip))
+    def add_trip(self, trip: Trip) -> "TripLog":
+        self._trips.append(trip)
         return self
 
-    def get_total_miles_driven(self, driver: Driver) -> float:
-        driver_logs = self._get_driver_logs(driver)
-        return sum(
-            [driver_log.trip.miles_driven for driver_log in driver_logs]
-        )
+    def get_total_miles_driven(self) -> float:
+        return sum([trip.miles_driven for trip in self._trips])
 
-    def get_average_speed(self, driver: Driver) -> Union[None, float]:
-        driver_logs = self._get_driver_logs(driver)
-        if driver_logs:
-            average_speed = (
-                sum([driver_log.trip.mph for driver_log in driver_logs]) /
-                len(driver_logs)
-            )
-        else:
-            average_speed = None
-        return average_speed
+    def get_average_speed(self) -> Union[None, float]:
+        if self.isempty():
+            return None
+        return sum([trip.mph for trip in self._trips]) / len(self._trips)

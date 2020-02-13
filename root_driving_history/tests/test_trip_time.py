@@ -25,6 +25,13 @@ def test_minutes_greater_than_59_raises_error():
         TripTime(0, 60)
 
 
+def test_string_representation():
+    assert str(TripTime(0, 0)) == "00:00"
+    assert str(TripTime(1, 10)) == "01:10"
+    assert str(TripTime(10, 1)) == "10:01"
+    assert str(TripTime(10, 10)) == "10:10"
+
+
 def test_inequality_implementations_between_two_times():
     # __gt__
     assert TripTime(1, 0) > TripTime(0, 0)

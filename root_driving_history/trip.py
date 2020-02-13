@@ -3,7 +3,7 @@
 import attr
 
 
-@attr.s
+@attr.s(repr=False)
 class TripTime(object):
     hour: int = attr.ib()
     min: int = attr.ib()
@@ -26,6 +26,9 @@ class TripTime(object):
 
     def __add__(self, other):
         raise NotImplementedError
+
+    def __repr__(self):
+        return "{:02}:{:02}".format(self.hour, self.min)
 
 
 @attr.s
