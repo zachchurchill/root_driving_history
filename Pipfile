@@ -12,6 +12,7 @@ coverage = "*"
 pytest = "*"
 attr = "*"
 ipython = "*"
+click = "*"
 
 [requires]
 python_version = "3.7"
