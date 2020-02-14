@@ -1,5 +1,7 @@
 """Contains the Trip object definition"""
 
+from typing import Any, Optional
+
 import attr
 
 
@@ -9,12 +11,16 @@ class TripTime(object):
     min: int = attr.ib()
 
     @hour.validator
-    def is_between_zero_and_twenty_three(self, attribute, value):
+    def is_between_zero_and_twenty_three(
+            self, attribute: attr.Attribute, value: Any
+    ) -> Optional[ValueError]:
         if value < 0 or value > 23:
             raise ValueError("'hour' should be between 0 and 23, inclusive")
 
     @min.validator
-    def is_between_zero_and_fifty_nine(self, attribute, value):
+    def is_between_zero_and_fifty_nine(
+            self, attribute: attr.Attribute, value: Any
+    ) -> Optional[ValueError]:
         if value < 0 or value > 59:
             raise ValueError("'hour' should be between 0 and 59, inclusive")
 
@@ -38,7 +44,9 @@ class Trip(object):
     miles_driven: float = attr.ib()
 
     @start_time.validator
-    def starts_before_end_time(self, attribute, value):
+    def starts_before_end_time(
+            self, attribute: attr.Attribute, value: Any
+    ) -> Optional[ValueError]:
         if value >= self.end_time:
             raise ValueError(
                 'start_time should be before end_time'

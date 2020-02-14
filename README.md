@@ -26,7 +26,9 @@ Example: `Trip Dan 07:15 07:45 17.3`
 
 Discard any trips that average a speed of less than 5 mph or greater than 100 mph.
 
-Generate a report containing each driver with total miles driven and average speed. Sort the output by most miles driven to least. Round miles and miles per hour to the nearest integer.
+Generate a report containing each driver with total miles driven and average speed. 
+Sort the output by most miles driven to least. Round miles and miles per hour to the 
+nearest integer.
 
 Example input:
 ```
@@ -46,3 +48,22 @@ Kumi: 0 miles
 ```
 
 ## Approach
+
+- I decided to create objects to represent the data collected from the logs to 
+mimic what one might expect with working from objects in a database/ORM. In order
+to describe how Drivers and Trips interacted, I created the TripLog object,
+where a TripLog is instantiated with a Driver, and Trips can be added to the log
+via the `add_trip` method. I liked how this produced an easy way to describe 
+how each Driver can have several Trips without needing to tie the Trips directly
+to a Driver - this piece is what was inspired by what you would find in a 
+normalized database.
+- To parse the text logs I decided to use a function instead of a class because
+I didn't think there was a need to keep state after the log was parsed. This 
+also made it easier to test since I only needed to vary the inputs to inspect
+the final result. I chose to use a function for creating the report string for
+similar reasons.
+- For parsing the text logs I used regular expressions, where I am specifically
+looking for "Driver" and "Trip" for the keywords, though the assumption of correct
+capitalization could be easily relaxed by adding flags to the `re.findall` function.
+- I also decided to forgo most documentation in this coding example and instead
+focused on providing typing and clear function/class names.

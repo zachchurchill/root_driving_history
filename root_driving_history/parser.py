@@ -3,7 +3,7 @@
 import re
 from io import StringIO
 from collections import defaultdict
-from typing import Union, List
+from typing import Union, List, Optional
 
 from .trip_log import TripLog
 from .driver import Driver
@@ -59,7 +59,7 @@ def parse_input_log(raw_data: Union[str, StringIO]) -> List[TripLog]:
 
 def _create_driver_from_regex_driver_line(
         regex_driver_line: str
-) -> Union[None, Driver]:
+) -> Optional[Driver]:
     if not re.match(DRIVER_KEYWORD_REGEX, regex_driver_line):
         return None
 
@@ -70,7 +70,7 @@ def _create_driver_from_regex_driver_line(
 
 def _create_trip_from_regex_trip_line(
         regex_trip_line: str
-) -> Union[None, Trip]:
+) -> Optional[Trip]:
     if not re.match(TRIP_KEYWORD_REGEX, regex_trip_line):
         return None
 
@@ -89,7 +89,7 @@ def _create_trip_from_regex_trip_line(
 
 def _get_driver_of_regex_trip_line(
         regex_trip_line: str
-) -> Union[None, Driver]:
+) -> Optional[Driver]:
     if not re.match(TRIP_KEYWORD_REGEX, regex_trip_line):
         return None
 

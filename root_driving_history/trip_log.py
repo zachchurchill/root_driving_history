@@ -1,6 +1,6 @@
 """Contains the TripLog and TripLogItem definition"""
 
-from typing import List, Union
+from typing import List, Optional
 
 import attr
 
@@ -14,15 +14,15 @@ class TripLog(object):
     _trips: List[Trip] = attr.ib(init=False, default=attr.Factory(list))
 
     @driver.validator
-    def is_a_driver(self, attribute, value):
+    def is_a_driver(self, attribute, value) -> Optional[TypeError]:
         if value.__class__ != Driver:
             raise TypeError("'driver' needs to be a Driver object")
 
     @property
-    def trips(self):
+    def trips(self) -> List[Trip]:
         return self._trips
 
-    def isempty(self):
+    def isempty(self) -> bool:
         return len(self._trips) == 0
 
     def add_trip(self, trip: Trip) -> "TripLog":
@@ -32,7 +32,7 @@ class TripLog(object):
     def get_total_miles_driven(self) -> float:
         return sum([trip.miles_driven for trip in self._trips])
 
-    def get_average_speed(self) -> Union[None, float]:
+    def get_average_speed(self) -> Optional[float]:
         if self.isempty():
             return None
         return (
